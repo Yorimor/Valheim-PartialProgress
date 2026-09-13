@@ -10,7 +10,7 @@ namespace VPartialProgress
     {
         const string pluginGUID = "Yorimor-PartialProgress";
         const string pluginName = "PartialProgress";
-        const string pluginVersion = "1.0.1";
+        const string pluginVersion = "1.1.0";
 
         private readonly Harmony HarmonyInstance = new Harmony(pluginGUID);
 
