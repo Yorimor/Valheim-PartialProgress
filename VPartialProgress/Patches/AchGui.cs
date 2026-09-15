@@ -15,6 +15,12 @@ namespace VPartialProgress.Patches
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var branchCode = -1;
+
+            var myTargetNum = 1f;
+            if (Main.showNoProgress.Value)
+            {
+                myTargetNum = 0f;
+            }
             
             MethodInfo myGetColor = AccessTools.Method(typeof(AchievementsPatches), nameof(AchievementsPatches.MyGetColor));
             MethodInfo methodToFind = AccessTools.Method(typeof(Color), "get_green");
@@ -29,7 +35,7 @@ namespace VPartialProgress.Patches
                     branchCode = i;
                     if (codes[i - 1].opcode.Equals(OpCodes.Ldarg_3))
                     {
-                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, 1f);
+                        codes[i - 1] = new CodeInstruction(OpCodes.Ldc_R4, myTargetNum);
                     }
                 }
 
@@ -73,6 +79,10 @@ namespace VPartialProgress.Patches
             else if (current >= 1)
             {
                 color =  Color.red;
+            }
+            else if (current <= 0)
+            {
+                color =  Color.grey;
             }
 
             return color;
