@@ -9,7 +9,7 @@ namespace VPartialProgress.Patches
 {
     [HarmonyPatch(typeof(AchievementsGui))]
     [HarmonyPatch("CreateStatRow")]
-    public class AchievementsPatches
+    public class AchievementsGuiPatches
     {
         [HarmonyTranspiler]
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -22,7 +22,7 @@ namespace VPartialProgress.Patches
                 myTargetNum = 0f;
             }
             
-            MethodInfo myGetColor = AccessTools.Method(typeof(AchievementsPatches), nameof(AchievementsPatches.MyGetColor));
+            MethodInfo myGetColor = AccessTools.Method(typeof(AchievementsGuiPatches), nameof(AchievementsGuiPatches.MyGetColor));
             MethodInfo methodToFind = AccessTools.Method(typeof(Color), "get_green");
             
             var codes = new List<CodeInstruction>(instructions);
@@ -86,6 +86,27 @@ namespace VPartialProgress.Patches
             }
 
             return color;
+        }
+    }
+    
+    [HarmonyPatch(typeof(Achievements))]
+    [HarmonyPatch("Initialize")]
+    public class AchievementsPatches
+    {
+        [HarmonyPrefix]
+        public static void InitPatch(Achievements __instance)
+        {
+            if (Main.showSecrets.Value)
+            {
+                foreach (var achievementList in __instance.m_achievementLists)
+                {
+                    foreach (var achievement in achievementList.m_achievements)
+                    {
+                        achievement.m_clickable = true;
+                        achievement.m_isSecret = false;
+                    }
+                }
+            }
         }
     }
 }

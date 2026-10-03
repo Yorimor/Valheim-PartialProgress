@@ -520,7 +520,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Plugin.cs" />
-        <Compile Include="Patches\AchGui.cs" />
+        <Compile Include="Patches\AcheivementsPatches.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
